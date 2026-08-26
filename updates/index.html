@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Romania DOOH Watch</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%A1%3C/text%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #F2F4F3;
+  --surface: #FFFFFF;
+  --surface-2: #E7EBEA;
+  --ink: #17232B;
+  --ink-dim: #4B5A62;
+  --line: #C7D0CC;
+  --accent: #1E97A3;
+  --accent-strong: #12707A;
+  --accent-glow: rgba(30, 151, 163, 0.35);
+  --high: #B23A26;
+  --medium: #A66A1E;
+  --low: #4B6E52;
+  --high-bg: rgba(178, 58, 38, 0.10);
+  --medium-bg: rgba(166, 106, 30, 0.10);
+  --low-bg: rgba(75, 110, 82, 0.10);
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Menlo, Consolas, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E151B;
+    --surface: #131C22;
+    --surface-2: #182129;
+    --ink: #E7EDEC;
+    --ink-dim: #9FB0B5;
+    --line: #29383F;
+    --accent: #4FD3DE;
+    --accent-strong: #7CE2EA;
+    --accent-glow: rgba(79, 211, 222, 0.35);
+    --high: #E2705C;
+    --medium: #E0A855;
+    --low: #7FAE87;
+    --high-bg: rgba(226, 112, 92, 0.14);
+    --medium-bg: rgba(224, 168, 85, 0.14);
+    --low-bg: rgba(127, 174, 135, 0.14);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E151B;
+  --surface: #131C22;
+  --surface-2: #182129;
+  --ink: #E7EDEC;
+  --ink-dim: #9FB0B5;
+  --line: #29383F;
+  --accent: #4FD3DE;
+  --accent-strong: #7CE2EA;
+  --accent-glow: rgba(79, 211, 222, 0.35);
+  --high: #E2705C;
+  --medium: #E0A855;
+  --low: #7FAE87;
+  --high-bg: rgba(226, 112, 92, 0.14);
+  --medium-bg: rgba(224, 168, 85, 0.14);
+  --low-bg: rgba(127, 174, 135, 0.14);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+}
+a { color: var(--accent-strong); }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+.masthead {
+  display: flex; flex-wrap: wrap; gap: 1rem;
+  align-items: flex-start; justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1.25rem; margin-bottom: 1.5rem;
+}
+.masthead h1 {
+  font-family: var(--font-mono);
+  font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 0.35rem;
+  text-wrap: balance;
+}
+.masthead .meta {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-dim);
+}
+.run-now {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--accent);
+  color: var(--accent-strong);
+  padding: 0.5rem 0.85rem;
+  border-radius: 2px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.run-now:hover { background: var(--accent-glow); }
+.controls {
+  display: flex; flex-wrap: wrap; gap: 0.6rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 0.85rem;
+  margin-bottom: 2rem;
+}
+.controls input[type="search"], .controls select {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  padding: 0.45rem 0.55rem;
+  max-width: 220px;
+}
+.controls input[type="search"] { flex: 1 1 220px; max-width: none; }
+.controls select { flex: 0 1 auto; }
+.controls button {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+  border-radius: 2px;
+  padding: 0.45rem 0.7rem;
+  cursor: pointer;
+}
+.controls button:hover { border-color: var(--accent); color: var(--accent-strong); }
+.result-count {
+  font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-strong);
+  align-self: center;
+}
+.tier-section { margin-bottom: 2.25rem; }
+.tier-heading {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--line);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.9rem;
+  display: flex; align-items: baseline; gap: 0.5rem;
+}
+.tier-heading .count { font-size: 0.8rem; color: var(--ink-dim); font-weight: normal; }
+.tier-heading.tier-high { border-color: var(--high); color: var(--high); }
+.tier-heading.tier-medium { border-color: var(--medium); color: var(--medium); }
+.tier-heading.tier-low { border-color: var(--low); color: var(--low); }
+.empty-tier { color: var(--ink-dim); font-size: 0.9rem; font-style: italic; }
+details.month-group { margin-bottom: 1.1rem; border-bottom: 1px solid var(--line); padding-bottom: 0.35rem; }
+details.month-group > summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 0.5rem 0.1rem;
+  list-style: none;
+  display: flex; gap: 0.5rem; align-items: baseline;
+}
+details.month-group > summary::-webkit-details-marker { display: none; }
+details.month-group > summary::before {
+  content: "▸"; color: var(--accent-strong); font-size: 0.8rem;
+}
+details.month-group[open] > summary::before { content: "▾"; }
+details.month-group .count { color: var(--ink-dim); font-weight: normal; }
+details.date-group { margin: 0 0 0.75rem 1.15rem; }
+details.date-group > summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-dim);
+  padding: 0.4rem 0.1rem;
+  list-style: none;
+  display: flex; gap: 0.5rem; align-items: baseline;
+}
+details.date-group > summary::-webkit-details-marker { display: none; }
+details.date-group > summary::before {
+  content: "▸"; color: var(--accent); font-size: 0.75rem;
+}
+details.date-group[open] > summary::before { content: "▾"; }
+details.date-group .count { color: var(--ink-dim); }
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.85rem;
+  padding-top: 0.5rem;
+}
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 0.9rem;
+  display: flex; flex-direction: column; gap: 0.4rem;
+}
+.card-top { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.18rem 0.4rem;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+}
+.tier-high { color: var(--high); background: var(--high-bg); border-color: var(--high); }
+.tier-medium { color: var(--medium); background: var(--medium-bg); border-color: var(--medium); }
+.tier-low { color: var(--low); background: var(--low-bg); border-color: var(--low); }
+.status-tag { color: var(--ink-dim); background: var(--surface-2); border-color: var(--line); text-transform: none; letter-spacing: 0; }
+.status-completed { color: var(--low); background: var(--low-bg); border-color: var(--low); }
+.card-title { font-size: 1rem; margin: 0; text-wrap: balance; }
+.card-number { font-family: var(--font-mono); color: var(--accent-strong); font-weight: 600; }
+.card-meta { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-dim); }
+.card-categories { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.cat-tag {
+  color: var(--ink-dim); background: var(--surface-2); border-color: var(--line);
+  text-transform: none; letter-spacing: 0;
+}
+.card-dates {
+  display: flex; flex-wrap: wrap; gap: 0.15rem 0.7rem;
+  font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-dim);
+}
+.card-dates .label { color: var(--accent-strong); }
+.card-desc { font-size: 0.88rem; margin: 0; max-width: 65ch; }
+.card-relevance { font-size: 0.85rem; margin: 0; color: var(--ink-dim); }
+.card-relevance .label { font-family: var(--font-mono); color: var(--accent-strong); }
+.card-foot {
+  margin-top: auto; padding-top: 0.4rem;
+  display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.78rem;
+}
+.card-developer { color: var(--ink-dim); }
+.more-info { font-family: var(--font-mono); white-space: nowrap; text-decoration: none; }
+.resources-section { margin-top: 3rem; padding-top: 1.5rem; border-top: 2px solid var(--line); }
+.resources-section > h2 {
+  font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em;
+  font-size: 1.05rem; margin-bottom: 1rem;
+}
+.resource-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 1.1rem;
+  scroll-margin-top: 1rem;
+}
+.resource-head { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
+.resource-head h3 { margin: 0; font-size: 1.05rem; }
+.resource-meta { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-dim); margin: 0.3rem 0 0.8rem; }
+.resource-desc { max-width: 68ch; }
+.resource-block { margin-top: 0.9rem; }
+.resource-block h4 {
+  font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase;
+  letter-spacing: 0.04em; color: var(--accent-strong); margin: 0 0 0.4rem;
+}
+.factor-list, .kf-list { list-style: none; margin: 0; padding: 0; font-size: 0.85rem; }
+.factor-list li, .kf-list li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.15rem 0; border-bottom: 1px dotted var(--line); }
+.kf-list li { max-width: 56ch; }
+.factor-score { font-family: var(--font-mono); font-variant-numeric: tabular-nums; color: var(--ink-dim); }
+.kf-value { color: var(--ink-dim); text-align: right; }
+.rationale { font-style: italic; color: var(--ink-dim); font-size: 0.88rem; }
+.notes { font-size: 0.85rem; color: var(--ink-dim); }
+.log-list, .source-list { list-style: none; margin: 0; padding: 0; font-size: 0.85rem; }
+.log-list li, .source-list li { padding: 0.2rem 0; }
+.log-date { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-dim); margin-right: 0.4rem; }
+.history-summary { margin-top: 0.6rem; font-size: 0.88rem; }
+.history-summary .label { font-family: var(--font-mono); color: var(--accent-strong); }
+.muted { color: var(--ink-dim); font-style: italic; }
+.back-link { display: inline-block; margin-top: 0.9rem; font-family: var(--font-mono); font-size: 0.8rem; text-decoration: none; }
+footer.page-footer {
+  margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--line);
+  font-size: 0.82rem; color: var(--ink-dim); max-width: 70ch;
+}
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="wrap" id="top">
+
+<div class="masthead">
+  <div>
+    <h1>Romania DOOH Watch</h1>
+    <div class="meta">0 proiecte urmărite &middot; 0 High &middot; 0 Medium &middot; 0 Low</div>
+  </div>
+  <a class="run-now" href="https://claude.ai/code/routines/trig_01LWdV5e36yiCE3pJpPgGspd" target="_blank" rel="noopener">&#9654; Run Research Now</a>
+</div>
+<div class="controls">
+  <input type="search" id="search-input" placeholder="Caută nume, oraș, dezvoltator, categorie…">
+  <select data-filter="categories"><option value="">Categorie (toate)</option></select>
+  <select data-filter="cities"><option value="">Oraș (toate)</option></select>
+  <select data-filter="status"><option value="">Status (toate)</option></select>
+  <select data-filter="tier"><option value="">Prioritate (toate)</option>
+    <option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option>
+  </select>
+  <select data-filter="dates"><option value="">Dată (toate)</option></select>
+  <button type="button" id="clear-filters">Clear filters</button>
+  <span class="result-count" id="result-count"></span>
+</div>
+
+<section class="tier-section" id="tier-high">
+  <h2 class="tier-heading tier-high">High Priority <span class="count">(0)</span></h2>
+  <p class="empty-tier">Niciun proiect în această categorie momentan.</p>
+</section>
+
+<section class="tier-section" id="tier-medium">
+  <h2 class="tier-heading tier-medium">Medium Priority <span class="count">(0)</span></h2>
+  <p class="empty-tier">Niciun proiect în această categorie momentan.</p>
+</section>
+
+<section class="tier-section" id="tier-low">
+  <h2 class="tier-heading tier-low">Low Priority <span class="count">(0)</span></h2>
+  <p class="empty-tier">Niciun proiect în această categorie momentan.</p>
+</section>
+<div class="resources-section">
+  <h2>Resources</h2>
+  <p class="empty-tier">Niciun proiect înregistrat încă.</p>
+</div>
+
+<footer class="page-footer">
+  Acest raport se regenerează automat zilnic. Sursele și istoricul complet pentru fiecare
+  proiect sunt disponibile în secțiunea Resources de mai jos, prin linkul "More information"
+  de pe fiecare card. Filtrul de dată acoperă datele de publicare ale surselor și datele de
+  urmărire/actualizare din sistem — nu datele aproximative menționate liber în text (ex. "spre
+  2028"), care rămân doar informative, nu filtrabile.
+</footer>
+</div>
+<script>
+(function () {
+  var MULTI_VALUE = { categories: true, cities: true, dates: true };
+  var searchInput = document.getElementById('search-input');
+  var selects = Array.prototype.slice.call(document.querySelectorAll('.controls select'));
+  var clearBtn = document.getElementById('clear-filters');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.project-card'));
+  var tierSections = Array.prototype.slice.call(document.querySelectorAll('.tier-section'));
+  var countEl = document.getElementById('result-count');
+
+  function norm(s) { return (s || '').toLowerCase(); }
+
+  function applyFilters() {
+    var q = norm(searchInput.value);
+    var filters = {};
+    selects.forEach(function (el) { if (el.value) filters[el.dataset.filter] = el.value; });
+    var active = !!q || Object.keys(filters).length > 0;
+    var shown = 0;
+
+    cards.forEach(function (card) {
+      var match = true;
+      if (q && norm(card.dataset.search).indexOf(q) === -1) match = false;
+      Object.keys(filters).forEach(function (key) {
+        if (MULTI_VALUE[key]) {
+          var list = (card.dataset[key] || '').split(',');
+          if (list.indexOf(filters[key]) === -1) match = false;
+        } else if (card.dataset[key] !== filters[key]) {
+          match = false;
+        }
+      });
+      card.style.display = match ? '' : 'none';
+      if (match) {
+        shown++;
+        if (active) {
+          var dateDetails = card.closest('details.date-group');
+          if (dateDetails) dateDetails.open = true;
+          var monthDetails = card.closest('details.month-group');
+          if (monthDetails) monthDetails.open = true;
+        }
+      }
+    });
+
+    if (active) {
+      document.querySelectorAll('details.date-group').forEach(function (d) {
+        var hasVisible = Array.prototype.slice.call(d.querySelectorAll('.project-card'))
+          .some(function (c) { return c.style.display !== 'none'; });
+        d.style.display = hasVisible ? '' : 'none';
+      });
+      document.querySelectorAll('details.month-group').forEach(function (m) {
+        var hasVisible = Array.prototype.slice.call(m.querySelectorAll('.project-card'))
+          .some(function (c) { return c.style.display !== 'none'; });
+        m.style.display = hasVisible ? '' : 'none';
+      });
+      tierSections.forEach(function (section) {
+        var hasVisible = Array.prototype.slice.call(section.querySelectorAll('.project-card'))
+          .some(function (c) { return c.style.display !== 'none'; });
+        section.style.display = hasVisible ? '' : 'none';
+      });
+    } else {
+      document.querySelectorAll('details.date-group').forEach(function (d) {
+        d.style.display = '';
+        d.open = d.dataset.defaultOpen === '1';
+      });
+      document.querySelectorAll('details.month-group').forEach(function (m) {
+        m.style.display = '';
+        m.open = m.dataset.defaultOpen === '1';
+      });
+      tierSections.forEach(function (section) { section.style.display = ''; });
+    }
+    countEl.textContent = active ? (shown + ' rezultate') : '';
+  }
+
+  searchInput.addEventListener('input', applyFilters);
+  selects.forEach(function (el) { el.addEventListener('change', applyFilters); });
+  clearBtn.addEventListener('click', function () {
+    searchInput.value = '';
+    selects.forEach(function (el) { el.value = ''; });
+    applyFilters();
+  });
+})();
+</script>
+</body>
+</html>
